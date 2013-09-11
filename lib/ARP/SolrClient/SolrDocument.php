@@ -4,7 +4,6 @@ namespace ARP\SolrClient;
 /**
  * SolrDocument class.
  * @author A.R.Pour
- * @version 1.1
  */
 class SolrDocument {
     private $_doc;

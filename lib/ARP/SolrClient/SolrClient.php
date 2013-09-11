@@ -4,7 +4,6 @@ namespace ARP\SolrClient;
 /**
  * Solr class.
  * @author A.R.Pour
- * @version 1.1
  */
 class SolrClient {
     protected $browser = null;
@@ -12,6 +11,7 @@ class SolrClient {
     protected $port = null;
     protected $path = null;
     protected $core = null;
+    protected $method = 'POST';
     protected $version = null;
     protected $params = array();
     protected $cache;
@@ -113,32 +113,21 @@ class SolrClient {
 
     /**
      * Change cache size for appendDocument function.
-     * @param [type] $size [description]
+     * @param integer $size
      */
     public function setCacheSize($size) {
         $this->cacheSize = (int)$size;
     }
 
-    private function jsonUpdate($content) {
-        if($this->version == 4)
-            $url = $this->generateURL('update');
-        else 
-            $url = $this->generateURL('update/json');
-        
-        return $this->browser->post(
-            $url, 
-            array('Content-type:application/json'), 
-            $content
-        );
-    }
-
-    private function commitCachedDocuments() {
-        if(strlen($this->cache) > 1) {
-            $response = $this->jsonUpdate('{' . substr($this->cache,0,-1) . '}');
-            $this->cache = '';
-            return $response;
-        }
-        return null;
+    /**
+     * Method for query. Chose "post" or "get".
+     * @param string $method
+     */
+    public function setMethod($method) {
+        if(strtoupper($method) === 'GET')
+            $this->method = 'GET';
+        else
+            $this->method = 'POST';
     }
 
     protected function generateURL($path = '') {
@@ -158,5 +147,34 @@ class SolrClient {
                 $arr1[$key] = $arr2[$key];
         }
         return $arr1;
+    }
+
+    /**
+     * POST solr update request.
+     * @param  string $content json content
+     * @return object Browser response.
+     */
+    private function jsonUpdate($content) {
+        if($this->version == 4)
+            $url = $this->generateURL('update');
+        else 
+            $url = $this->generateURL('update/json');
+        
+        return $this->browser->post(
+            $url, array('Content-type:application/json'), $content
+        );
+    }
+
+    /**
+     * Commit documents if cache not empty.
+     * @return mixed null if cache empty or browser response object.
+     */
+    private function commitCachedDocuments() {
+        if(strlen($this->cache) > 1) {
+            $response = $this->jsonUpdate('{' . substr($this->cache,0,-1) . '}');
+            $this->cache = '';
+            return $response;
+        }
+        return null;
     }
 }

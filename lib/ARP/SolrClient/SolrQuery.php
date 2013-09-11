@@ -6,12 +6,10 @@ use ARP\SolrClient\SolrClient;
 /**
  * SolrQuery class.
  * @author A.R.Pour
- * @version 1.2
  */
 class SolrQuery extends SolrClient {
     protected $params = array();
     protected $page = 1;
-    protected $getQuery = false;
     protected $documentsFound = 0;
     protected $result = null;
     protected $content = '';
@@ -52,7 +50,7 @@ class SolrQuery extends SolrClient {
         $this->content = http_build_query($this->params);
         $this->content = preg_replace('/%5B([\d]{1,2})%5D=/', '=', $this->content);
 
-        if($this->getQuery) {
+        if($this->method === 'GET') {
             $response = $this->browser->get(
                 $this->generateURL($this->requestHandler) . "?" . $this->content
             );
@@ -82,6 +80,10 @@ class SolrQuery extends SolrClient {
             : 0;
     }
 
+    /**
+     * Returns the query result.
+     * @return stdObject
+     */
     public function getResult() {
         return $this->result;
     }
@@ -114,6 +116,8 @@ class SolrQuery extends SolrClient {
     public function debug($debug) {
         if($debug)
             $this->params['deubgQuery'] = 'true';
+        else if(isset($this->params['deubgQuery']))
+            unset($this->params['deubgQuery']);
     }
 
     /**
@@ -206,17 +210,23 @@ class SolrQuery extends SolrClient {
     }
 
     /**
-     * @todo REMOVE ME
+     * Request handler for solr select query.
+     * @param  string $handler
+     * @return string Request handler
      */
-    public function getInfo() {
-        return urldecode($this->content) . 
-            '<pre>' . print_r($this->params, true) . '</pre>';
-    }
-
     public function requestHandler($handler = null) {
         if(!is_null($handler))
             $this->requestHandler = $handler;
 
         return $this->requestHandler;
+    }
+
+    /**
+     * Returns the solr query and the params.
+     * @return string
+     */
+    public function queryInfo() {
+        return urldecode($this->content) . 
+            '<pre>' . print_r($this->params, true) . '</pre>';
     }
 }
