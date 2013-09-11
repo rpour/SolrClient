@@ -4,7 +4,6 @@ namespace ARP\SolrClient;
 /**
  * Paging class.
  * @author A.R.Pour
- * @version 1.0
  */
 class Paging {
     private $paging = array();
@@ -59,14 +58,19 @@ class Paging {
             $this->paging['index']['startPage'] = $this->paging['index']['startPage'] 
                 - ($this->paging['index']['length'] - ($this->paging['index']['endPage'] - $this->paging['index']['startPage']));
 
-        if($this->paging['index']['startPage'] < 1) {
+        if($this->paging['index']['startPage'] < 1)
             $this->paging['index']['startPage'] = 1;
-        }
-
+        
         $this->paging['index']['currentPage'] = $this->paging['page'];
 
         $this->paging['index']['firstPage'] = 1;
         $this->paging['index']['lastPage'] = $this->paging['pages'];
+
+        if($this->paging['index']['currentPage'] < $this->paging['index']['lastPage'])
+            $this->paging['index']['nextPage'] = $this->paging['index']['currentPage'] + 1;
+
+        if($this->paging['index']['currentPage'] > 1)
+            $this->paging['index']['prevPage'] = $this->paging['index']['currentPage'] - 1;        
     }
 
     public function get($key = null) {
