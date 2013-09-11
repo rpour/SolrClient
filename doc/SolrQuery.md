@@ -1,5 +1,6 @@
 SolrQuery
 =========
+* [back](../README.md)
 
 Connect
 -------
@@ -26,7 +27,7 @@ Find
 $solr->find('*:*');
 
 foreach($solr->getDocuments() as $document)
-    echo '<br/>' . $document->title;
+    echo "\n" . $document->title;
 </code></pre>
 
 Select
@@ -38,7 +39,7 @@ $solr->find('*:*');
 echo '<br/>' . $solr->documentsFound();
 
 foreach($solr->getDocuments() as $document)
-    echo '<br/>' . $document->title;
+    echo "\n" . $document->title;
 </code></pre>
 
 Offset and limit
@@ -56,7 +57,7 @@ $result = $solr->find('*:*');
 </code></pre>
 or
 <pre><code>
-$result = $solr->find('*:*', 1, 10); 
+$result = $solr->find('*:*', 4, 10); 
 </code></pre>
 
 Facets
@@ -68,10 +69,10 @@ $solr->find('*:*');
 $facets = $solr->getFacetFields();
 
 foreach($facets->text as $key => $count)
-    echo "<br/>$key ($count)";
+    echo "\n$key ($count)";
 
 foreach($facets->keywords as $key => $count)
-    echo "<br/>$key ($count)";
+    echo "\n$key ($count)";
 </code></pre>
 
 <pre><code>

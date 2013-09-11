@@ -1,5 +1,6 @@
 SolrClient
 ==========
+* [back](../README.md)
 
 Connect
 -------

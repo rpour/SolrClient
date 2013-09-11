@@ -1,7 +1,7 @@
 SolrClient
 ==========
 
-* [SolrClient](doc/solrClient.md)
-* [SolrDocument](doc/solrDocument.md)
-* [SolrQuery](doc/solrQuery.md)
-* [Paging](doc/paging.md)
+* [SolrClient](doc/SolrClient.md)
+* [SolrDocument](doc/SolrDocument.md)
+* [SolrQuery](doc/SolrQuery.md)
+* [Paging](doc/Paging.md)

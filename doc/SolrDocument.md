@@ -1,5 +1,6 @@
 SolrDocument
 ============
+* [back](../README.md)
 
 Create document
 ---------------
