@@ -1,73 +1,80 @@
+SolrClient
+==========
+
 Connect
-=======
-<code>
-    use ARP\SolrClient\SolrClient;
-    use Buzz\Browser;
-    use Buzz\Client\Curl;
+-------
+<pre><code>
+use ARP\SolrClient\SolrClient;
+use Buzz\Browser;
+use Buzz\Client\Curl;
 
-    $config = array(
-        'host'    => 'localhost',
-        'port'    => 8080,
-        'path'    => 'solr',
-        'core'    => 'core0',
-        'version' => 4,
-        'browser' => new Browser(new Curl())
-    );
+$config = array(
+    'host'    => 'localhost',
+    'port'    => 8080,
+    'path'    => 'solr',
+    'core'    => 'core0',
+    'version' => 4,
+    'browser' => new Browser(new Curl())
+);
 
-    $solr = new Solr($config);
-</code>
-
+$solr = new SolrClient($config);
+</code></pre>
 
 Add or update document
-======================
-<code>
-    $solr = new Solr($config); 
-    $solr->addDocument($doc);
-    $solr->commit();
-    $solr->optimize();
-</code>
+----------------------
+<pre><code>
+$solr = new SolrClient($config); 
+$solr->addDocument($doc);
+$solr->commit();
+$solr->optimize();
+</code></pre>
 
 
 Add or update document's
-========================
-<code>
-    $solr = new Solr($config); 
+------------------------
+<pre><code>
+$solr = new Solr($config); 
 
-    $array = array(); 
+$array = array(); 
 
-    foreach(array(1,2,3,4,5) as $id) { 
-        $doc = new SolrDocument(); 
-        $doc->id = $id; 
-        $doc->title = "hallo"; 
-        $array[] = $doc; 
-    } 
+foreach(array(1,2,3,4,5) as $id) { 
+    $doc = new SolrDocument(); 
+    $doc->id = $id; 
+    $doc->title = "hallo"; 
+    $array[] = $doc; 
+} 
 
-    $solr->addDocuments($array);
-    $solr->commit();
-    $solr->optimize();
-</code>
+$solr->addDocuments($array);
+$solr->commit();
+$solr->optimize();
+</code></pre>
 
 Append document's
-=================
-<code>
-    $solr = new Solr($config);
-    $solr->cacheSize(1024);
+-----------------
+<pre><code>
+$solr = new Solr($config);
+$solr->cacheSize(1024);
 
-    foreach(array(1,2,3,4,5) as $id) { 
-        $doc = new SolrDocument(); 
-        $doc->id = $id; 
-        $doc->title = "tar gz"; 
-        $solr->appendDocument($doc);
-    } 
+foreach(array(1,2,3,4,5) as $id) { 
+    $doc = new SolrDocument(); 
+    $doc->id = $id; 
+    $doc->title = "tar gz"; 
+    $solr->appendDocument($doc);
+} 
 
-    $solr->commit();
-    $solr->optimize();
-</code>
+$solr->commit();
+$solr->optimize();
+</code></pre>
 
 Delete
-======
-<code>
-    $solr->deleteAll();
-    $solr->deleteByQuery('*:*'); // deleteAll()
-    $solr->deleteByQuery('id:2');
-</code>
+------
+<pre><code>
+// delete all
+$solr->deleteAll();
+
+// delete all
+$solr->deleteByQuery('*:*');
+
+// delete document with id 2
+$solr->deleteByQuery('id:2');
+</code></pre>

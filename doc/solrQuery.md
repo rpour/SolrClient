@@ -1,88 +1,87 @@
+SolrQuery
+=========
+
 Connect
-=======
-<code>
-    use ARP\SolrClient\SolrQuery;
-    use Buzz\Browser;
-    use Buzz\Client\Curl;
+-------
+<pre><code>
+use ARP\SolrClient\SolrQuery;
+use Buzz\Browser;
+use Buzz\Client\Curl;
 
-    $config = array(
-        'host'    => 'localhost',
-        'port'    => 8080,
-        'path'    => 'solr',
-        'core'    => 'core0',
-        'version' => 4,
-        'browser' => new Browser(new Curl())
-    );
+$config = array(
+    'host'    => 'localhost',
+    'port'    => 8080,
+    'path'    => 'solr',
+    'core'    => 'core0',
+    'version' => 4,
+    'browser' => new Browser(new Curl())
+);
 
-    $solr = new SolrQuery($config);
-</code>
+$solr = new SolrQuery($config);
+</code></pre>
 
 Find
-====
-<code>
-    $documents = $solr->find('*:*');
+----
+<pre><code>
+$solr->find('*:*');
 
-    foreach($documents as $document) {
-        echo '<br/>' . $document->title;
-    }
-</code>
+foreach($solr->getDocuments() as $document)
+    echo '<br/>' . $document->title;
+</code></pre>
 
 Select
-======
-<code>
-    $solr->select('*,score');
+------
+<pre><code>
+$solr->select('*,score');
+$solr->find('*:*');
 
-    $documents = $solr->find('*:*');
+echo '<br/>' . $solr->documentsFound();
 
-    echo '<br/>' . $document->documentsFound();
-
-    foreach($documents as $document) {
-        echo '<br/>' . $document->title;
-    }
-</code>
+foreach($solr->getDocuments() as $document)
+    echo '<br/>' . $document->title;
+</code></pre>
 
 Offset and limit
-================
-<code>
-    $solr->limit(10);    
-    $solr->offset(0);
-    $documents = $solr->find('*:*');
-</code>
+----------------
+<pre><code>
+$solr->limit(10);    
+$solr->offset(30);
+$result = $solr->find('*:*');
+</code></pre>
 or
-<code>
-    $solr->limit(10);    
-    $solr->page(1);
-    $documents = $solr->find('*:*');
-</code>
+<pre><code>
+$solr->limit(10);    
+$solr->page(4);
+$result = $solr->find('*:*');
+</code></pre>
 or
-<code>
-    $documents = $solr->find('*:*', 1, 10); 
-</code>
+<pre><code>
+$result = $solr->find('*:*', 1, 10); 
+</code></pre>
 
 Facets
-======
-<code>
-    $solr->facet(array('text', 'keywords'));
-    $documents = $solr->find('*:*');
-    $facets = $solr->getFacetFields();
+------
+<pre><code>
+$solr->facet(array('text', 'keywords'));
+$solr->find('*:*');
 
-    foreach($facets->text as $key => $count) {
-        echo "<br/>$key ($count)";
-    }
+$facets = $solr->getFacetFields();
 
-    foreach($facets->keywords as $key => $count) {
-        echo "<br/>$key ($count)";
-    }
-</code>
+foreach($facets->text as $key => $count)
+    echo "<br/>$key ($count)";
 
-<code>
-    $minCount = 5;
+foreach($facets->keywords as $key => $count)
+    echo "<br/>$key ($count)";
+</code></pre>
 
-    $sort = 'count'; // 'index'
+<pre><code>
+$minCount = 5;
 
-    $solr->facet(
-        array('text', 'keywords'),
-        $minCount,
-        $sort
-    );
-</code>
+$sort = 'count'; // 'index'
+
+$solr->facet(
+    array('text', 'keywords'),
+    $minCount,
+    $sort
+);
+</code></pre>
